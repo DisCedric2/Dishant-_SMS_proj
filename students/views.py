@@ -22,14 +22,17 @@ def list_students(request):
 
 def add_student(request):
     if request.method == 'POST':
-        form = StudentForm(request.POST)
-        if form.is_valid():
+        form = StudentForm(request.POST, instance=None)  
+        if form.is_valid():  
             form.save()
             messages.success(request, 'Student added successfully.')
             return redirect('students:list')
     else:
         form = StudentForm()
+    
     return render(request, 'student_form.html', {'form': form})
+
+
 
 def edit_student(request, pk):
     student = get_object_or_404(Student, pk=pk)
