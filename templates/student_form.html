@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-container">
+<h2>{% if student %}Edit{% else %}Add{% endif %} Student</h2>
+
+<form id="student-form" method="post" novalidate>
+    {% csrf_token %}
+    
+    <div class="form-group">
+    <label for="id_name">Name</label>
+    {{ form.name }}
+    </div>
+
+    <div class="form-group">
+    <label for="id_age">Age</label>
+    {{ form.age }}
+    </div>
+
+    <div class="form-group">
+    <label for="id_email">Email</label>
+    {{ form.email }}
+    </div>
+
+    <div class="form-group">
+    <label for="id_course">Course</label>
+    {{ form.course }}
+    </div>
+
+    <button type="submit" class="btn">Save</button>
+</form>
+</div>
+
+<script>
+document.getElementById('student-form').addEventListener('submit', function(e) {
+const name = document.getElementById('id_name').value.trim();
+const age = document.getElementById('id_age').value.trim();
+const email = document.getElementById('id_email').value.trim();
+const course = document.getElementById('id_course').value.trim();
+
+const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+let errors = [];
+if (!name) errors.push('Name is required.');
+if (!age || isNaN(age) || Number(age) < 0) errors.push('Valid age is required.');
+if (!email || !emailRe.test(email)) errors.push('Valid email is required.');
+if (!course) errors.push('Course is required.');
+
+if (errors.length) {
+    e.preventDefault();
+    alert(errors.join('\n'));
+}
+});
+</script>
+{% endblock %}
